@@ -31,6 +31,15 @@ const insertAnchorTag = (el, anchorName) => {
   }
 };
 
+const scrollToAnchor = (anchorName, smooth = true) => {
+  const anchorElement =
+    document.getElementById(anchorName) ||
+    document.getElementsByName(anchorName)[0];
+  if (anchorElement) {
+    anchorElement.scrollIntoView({ behavior: smooth ? "smooth" : "instant" });
+  }
+};
+
 const copyAnchorLink = (anchorName) => {
   // Get the full link
   const currentUrl = window.location.href;
@@ -44,12 +53,6 @@ const copyAnchorLink = (anchorName) => {
 
   // Replace the current URL with the full link and scroll to the anchor
   window.history.replaceState(null, null, fullLink);
-  const anchorElement =
-    document.getElementById(anchorName) ||
-    document.getElementsByName(anchorName)[0];
-  if (anchorElement) {
-    anchorElement.scrollIntoView({ behavior: "smooth" });
-  }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -68,6 +71,21 @@ document.addEventListener("DOMContentLoaded", () => {
     button.innerHTML = "Copy page link";
     el.appendChild(button);
 
-    button.addEventListener("click", (e) => copyAnchorLink(anchorName), false);
+    button.addEventListener(
+      "click",
+      (e) => {
+        copyAnchorLink(anchorName);
+        scrollToAnchor(anchorName);
+      },
+      false
+    );
+
+    // Scroll to the anchor if the page is loaded with a hash. Need to do this
+    // here because the anchor tags are inserted dynamically as part of
+    // the domContentLoaded event.
+    const hash = window.location.hash;
+    if (hash && hash.substring(1)) {
+      scrollToAnchor(hash.substring(1), false);
+    }
   });
 });
