@@ -1,8 +1,7 @@
 const getPageNumber = (pageEl) => {
+  // Use known page number format to extract page number from the div.
+  // We expect the page number to be in the format "— 123 —" inside the first child div
   if (!pageEl || !pageEl.firstChild) {
-    if (pageEl.id === "pf30") {
-      console.log("A");
-    }
     return;
   }
   const firstChild = pageEl.firstChild;
@@ -11,24 +10,11 @@ const getPageNumber = (pageEl) => {
     firstChild.nodeType === Node.ELEMENT_NODE &&
     firstChild.tagName === "DIV"
   ) {
-    if (pageEl.id === "pf30") {
-      console.log("B");
-    }
     const textContent = firstChild.textContent;
-
     const match = textContent.match(/— (\w+) —/);
     if (match) {
-      if (pageEl.id === "pf30") {
-        console.log("C");
-      }
       return match[1];
     }
-    if (pageEl.id === "pf30") {
-      console.log("D");
-    }
-  }
-  if (pageEl.id === "pf30") {
-    console.log("E");
   }
 
   return;
